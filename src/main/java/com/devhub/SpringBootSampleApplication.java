@@ -7,8 +7,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class SpringBootSampleApplication {
 
 	public static void main(String[] args) {
-		System.err.println("::: Sample :::");
 		SpringApplication.run(SpringBootSampleApplication.class, args);
+		System.err.println("::: Sample :::");
 	}
 
 }
