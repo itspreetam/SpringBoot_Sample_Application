@@ -46,4 +46,51 @@ public class UserController {
     public String deleteItem(@RequestParam int id) {
         return "Item with id " + id + " deleted (no CSRF protection simulated)";
     }
+
+    @GetMapping("/credentials")
+public Map<String, String> credentialsLeak() {
+    Map<String, String> credentials = new HashMap<>();
+    credentials.put("username", "admin");
+    credentials.put("password", "password123"); // hardcoded secret
+    return credentials;
+}
+
+// 2. Insecure file path exposure (Directory Traversal simulation)
+@GetMapping("/file")
+public String readFile(@RequestParam String path) {
+    return "Trying to read file from: /data/files/" + path;  // ../../etc/passwd
+}
+
+// 3. Command Injection simulation
+@GetMapping("/ping")
+public String pingHost(@RequestParam String host) {
+    String cmd = "ping -c 1 " + host;
+    return "Executing: " + cmd;  // Potential for injection like 127.0.0.1 && rm -rf /
+}
+
+// 4. Insecure redirect
+@GetMapping("/redirect")
+public String insecureRedirect(@RequestParam String url) {
+    return "Redirecting to: " + url;  // Test with: http://evil.com
+}
+
+// 5. Insecure deserialization simulation
+@PostMapping("/deserialize")
+public String deserializeData(@RequestBody String serializedObject) {
+    return "Simulated deserialization of: " + serializedObject;
+    // Add an actual ObjectInputStream test if needed
+}
+
+// 6. Using eval (simulated, Java doesn't directly support it but it's flagged conceptually)
+@GetMapping("/eval")
+public String unsafeEval(@RequestParam String input) {
+    return "Evaluating expression: " + input; // Simulate potential expression injection
+}
+
+// 7. Excessive logging (Information Leakage)
+@GetMapping("/login")
+public String login(@RequestParam String username, @RequestParam String password) {
+    System.out.println("Login attempt with username: " + username + " and password: " + password);
+    return "Login attempt logged";
+}
 }
