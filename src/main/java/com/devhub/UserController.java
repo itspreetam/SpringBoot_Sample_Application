@@ -93,4 +93,12 @@ public String login(@RequestParam String username, @RequestParam String password
     System.out.println("Login attempt with username: " + username + " and password: " + password);
     return "Login attempt logged";
 }
+
+@GetMapping("/headers")
+public ResponseEntity<String> missingHeaders() {
+    HttpHeaders headers = new HttpHeaders();
+    headers.add("Custom-Header", "Test"); // missing CSP, X-Content-Type-Options, etc.
+    return new ResponseEntity<>("Missing security headers", headers, HttpStatus.OK);
+}
+    
 }
